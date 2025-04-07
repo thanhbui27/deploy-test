@@ -1,0 +1,438 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "title",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "components": {
+    "responses": {
+      "Forbidden": {
+        "description": "Access token is missing or invalid"
+      },
+      "Accepted": {
+        "description": "The request was accepted"
+      },
+      "Created": {
+        "description": "The resource has been created"
+      },
+      "NotFound": {
+        "description": "The resource has been created"
+      },
+      "NotAcceptable": {
+        "description": "The resource has been created"
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Any": {
+        "description": "Any JSON object not defined as schema"
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "example": 100,
+            "nullable": false
+          },
+          "page": {
+            "type": "number",
+            "example": 2,
+            "nullable": false
+          },
+          "perPage": {
+            "type": "number",
+            "example": 10,
+            "nullable": false
+          },
+          "currentPage": {
+            "type": "number",
+            "example": 3,
+            "nullable": false
+          },
+          "lastPage": {
+            "type": "number",
+            "example": 10,
+            "nullable": false
+          },
+          "firstPage": {
+            "type": "number",
+            "example": 1,
+            "nullable": false
+          },
+          "lastPageUrl": {
+            "type": "string",
+            "example": "/?page=10",
+            "nullable": false
+          },
+          "firstPageUrl": {
+            "type": "string",
+            "example": "/?page=1",
+            "nullable": false
+          },
+          "nextPageUrl": {
+            "type": "string",
+            "example": "/?page=6",
+            "nullable": false
+          },
+          "previousPageUrl": {
+            "type": "string",
+            "example": "/?page=5",
+            "nullable": false
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 923
+          },
+          "full_name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "johndoe@example.com",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "example": "S3cur3P4s5word!",
+            "format": "password"
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2021-03-23T16:13:08.489+01:00",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2021-03-23T16:13:08.489+01:00",
+            "format": "date-time"
+          }
+        },
+        "description": "User (Model)"
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "route",
+        "description": "\n\n __ - ****",
+        "parameters": [],
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users (index)",
+        "description": "Get all users\n\n _app/controllers/users_controller.ts_ - **index**",
+        "operationId": "get users",
+        "parameters": [],
+        "tags": [
+          "@TAGS USER"
+        ],
+        "responses": {
+          "401": {
+            "description": "Returns **401** (Unauthorized)"
+          },
+          "403": {
+            "description": "Returns **403** (Forbidden)"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+              "access"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new user (store)",
+        "description": "Create a new user\n\n _app/controllers/users_controller.ts_ - **store**",
+        "operationId": "create user",
+        "parameters": [],
+        "tags": [
+          "@TAGS USER"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login user (login)",
+        "description": "Login user\n\n _app/controllers/auth_controller.ts_ - **login**",
+        "operationId": "login",
+        "parameters": [],
+        "tags": [
+          "@TAGS AUTH"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": true,
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": "string"
+                      }
+                    },
+                    "message": "Success"
+                  }
+                },
+                "example": {
+                  "status": true,
+                  "data": {
+                    "access_token": "string"
+                  },
+                  "message": "Success"
+                }
+              }
+            },
+            "description": "Returns **200** (OK) as **application/json**"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "Invalid credentials"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "Invalid credentials"
+                }
+              }
+            },
+            "description": "Returns **400** (Bad Request) as **application/json**"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "Invalid credentials"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "Invalid credentials"
+                }
+              }
+            },
+            "description": "Returns **401** (Unauthorized) as **application/json**"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "User not found"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "User not found"
+                }
+              }
+            },
+            "description": "Returns **404** (Not Found) as **application/json**"
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": "test@gmail.com",
+                  "password": "123456"
+                }
+              },
+              "example": {
+                "email": "test@gmail.com",
+                "password": "123456"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "logout user (logout)",
+        "description": "logout user\n\n _app/controllers/auth_controller.ts_ - **logout**",
+        "operationId": "logout",
+        "parameters": [],
+        "tags": [
+          "@TAGS AUTH"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": true,
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": "string"
+                      }
+                    },
+                    "message": "Success"
+                  }
+                },
+                "example": {
+                  "status": true,
+                  "data": {
+                    "access_token": "string"
+                  },
+                  "message": "Success"
+                }
+              }
+            },
+            "description": "Returns **200** (OK) as **application/json**"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "Invalid credentials"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "Invalid credentials"
+                }
+              }
+            },
+            "description": "Returns **400** (Bad Request) as **application/json**"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "Invalid credentials"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "Invalid credentials"
+                }
+              }
+            },
+            "description": "Returns **401** (Unauthorized) as **application/json**"
+          },
+          "403": {
+            "description": "Returns **403** (Forbidden)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": false,
+                    "message": "User not found"
+                  }
+                },
+                "example": {
+                  "status": false,
+                  "message": "User not found"
+                }
+              }
+            },
+            "description": "Returns **404** (Not Found) as **application/json**"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+              "access"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "@TAGS USER",
+      "description": "Everything related to @TAGS USER"
+    },
+    {
+      "name": "@TAGS USER",
+      "description": "Everything related to @TAGS USER"
+    },
+    {
+      "name": "@TAGS AUTH",
+      "description": "Everything related to @TAGS AUTH"
+    },
+    {
+      "name": "@TAGS AUTH",
+      "description": "Everything related to @TAGS AUTH"
+    }
+  ]
+}
